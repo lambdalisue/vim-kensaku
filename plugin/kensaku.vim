@@ -4,7 +4,6 @@ endif
 let g:loaded_kensaku = 1
 
 command! -nargs=+ -bar Kensaku call kensaku#_search(<q-args>)
-command! -nargs=+ KensakuAsync call kensaku#_search_async(<q-args>)
 
 call kensaku#_internal#conf#define(
       \ 'kensaku_dictionary_url',

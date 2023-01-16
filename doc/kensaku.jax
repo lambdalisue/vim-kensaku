@@ -49,15 +49,10 @@ COMMANDS					*kensaku-commands*
 >
 	:Kensaku kensaku
 <
-	このコマンドは同期待ちするため "|" による処理継続が可能です
+	このコマンドは同期待ちするため "|" による処理継続が可能です。
 >
-	:Kensaku kensaku | normal! cgn
+	:Kensaku kensaku | set hlsearch
 <
-							*:KensakuAsync*
-:KensakuAsync {query}
-	|:Kensaku| の非同期バージョンです。
-	非同期のため "|" による処理継続はできません。
-
 -----------------------------------------------------------------------------
 VARIABLES					*kensaku-variables*
 
@@ -105,7 +100,7 @@ kensaku#query_async({value}, {success}[, {failure}])
 
 	call kensaku#query_async(
 	      \ 'kensaku',
-	      \ { v -> Search('/\v' .. v) },
+	      \ function('Search'),
 	      \)
 <
 =============================================================================

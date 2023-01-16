@@ -14,10 +14,6 @@ function! kensaku#_search(value) abort
   call s:search(kensaku#query(a:value))
 endfunction
 
-function! kensaku#_search_async(value) abort
-  call kensaku#query_async(a:value, funcref('s:search'))
-endfunction
-
 function! s:search(value) abort
   if a:value ==# ''
     return
@@ -30,10 +26,4 @@ function! s:search(value) abort
     echo v:errmsg
     echohl None
   endif
-endfunction
-
-function! s:failure(err) abort
-  echohl ErrorMsg
-  echomsg printf('[kensaku] %s', a:err)
-  echohl None
 endfunction

@@ -8,11 +8,11 @@ Migemo プラグインと異なり JavaScript
 
 Kensaku (_kensaku.vim_) は Migemo を利用してローマ字のまま日本語検索を行うプラ
 グインです。既存の Migemo プラグインとは異なり JavaScript で実装された
-[jsmigemo][jsmigemo] を利用するため [C/Migemo][C/Migemo]
+[jsmigemo][jsmigemo] を利用するため [C/Migemo][c/migemo]
 のインストールは不要です。
 
 [jsmigemo]: https://github.com/oguna/jsmigemo
-[C/Migemo]: https://www.kaoriya.net/software/cmigemo/
+[c/migemo]: https://www.kaoriya.net/software/cmigemo/
 
 ## 利用方法
 
@@ -21,6 +21,12 @@ Kensaku (_kensaku.vim_) は Migemo を利用してローマ字のまま日本語
 
 ```
 :Kensaku kensaku
+```
+
+検索結果をハイライトしたい場合は以下の様に `| set hlsearch` を加えます。
+
+```
+:Kensaku kensaku | set hlsearch
 ```
 
 ## 別プラグインからの利用
@@ -59,7 +65,7 @@ endfunction
 
 call kensaku#query_async(
       \ 'kensaku',
-      \ { v -> Search('/\v' .. v) },
+      \ { v -> Search(v) },
       \)
 ```
 
