@@ -5,11 +5,14 @@ let g:loaded_kensaku = 1
 
 command! -nargs=+ -bar Kensaku call kensaku#_search(<q-args>)
 
-call kensaku#_internal#conf#define(
+function! s:define(name, default) abort
+  let g:{a:name} = get(g:, a:name, a:default)
+endfunction
+call s:define(
       \ 'kensaku_dictionary_url',
       \ 'https://github.com/oguna/migemo-compact-dict-latest/releases/download/v0.2/migemo-compact-dict',
       \)
-call kensaku#_internal#conf#define(
+call s:define(
       \ 'kensaku_dictionary_cache',
       \ expand('~/.cache/kensaku.vim/migemo-compact-dict')
       \)
