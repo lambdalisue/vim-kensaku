@@ -13,6 +13,7 @@ INTERFACE			|kensaku-interface|
   COMMANDS			  |kensaku-commands|
   VARIABLES			  |kensaku-variables|
   FUNCTIONS			  |kensaku-functions|
+  MAPPINGS			  |kensaku-mappings|
 
 
 =============================================================================
@@ -53,6 +54,9 @@ COMMANDS					*kensaku-commands*
 >
 	:Kensaku kensaku | set hlsearch
 <
+	オリジナル~
+	https://github.com/haya14busa/vim-migemo
+
 -----------------------------------------------------------------------------
 VARIABLES					*kensaku-variables*
 
@@ -103,5 +107,23 @@ kensaku#query_async({value}, {success}[, {failure}])
 	      \ function('Search'),
 	      \)
 <
+-----------------------------------------------------------------------------
+MAPPINGS					*kensaku-mappings*
+
+*<Plug>(kensaku-auto-replace)*
+	検索クエリ (|cmdline()| が返す文字列) にローマ字が含まれる場合に検索ク
+	エリを対応する正規表現に置き換える|:map-<expr>| のマッピング。
+	以下の様に <CR> にマッピングすることで検索クエリにローマ字が存在する
+	場合に自動で正規表現に置き換える。
+>
+	cnoremap <CR> <Plug>(kensaku-auto-replace)<CR>
+<
+	なお <CR> の上書きになるため |cnoremap| を使って再帰を避ける必要がある
+	ことに注意。もし間違えて |cmap| などを利用してしまいコマンド入力ができ
+	なくなった場合は <CR> の代わりに <C-j> を利用して決定すれば良い。
+
+	オリジナル~
+	https://github.com/rhysd/migemo-search.vim
+
 =============================================================================
 vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl

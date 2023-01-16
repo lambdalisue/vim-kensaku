@@ -5,14 +5,13 @@ let g:loaded_kensaku = 1
 
 command! -nargs=+ -bar Kensaku call kensaku#_search#search(<q-args>)
 
-function! s:define(name, default) abort
-  let g:{a:name} = get(g:, a:name, a:default)
-endfunction
-call s:define(
+cnoremap <silent><expr> <Plug>(kensaku-auto-replace) kensaku#_auto_replace#replace()
+
+call kensaku#_conf#define(
       \ 'kensaku_dictionary_url',
       \ 'https://github.com/oguna/migemo-compact-dict-latest/releases/download/v0.2/migemo-compact-dict',
       \)
-call s:define(
+call kensaku#_conf#define(
       \ 'kensaku_dictionary_cache',
       \ expand('~/.cache/kensaku.vim/migemo-compact-dict')
       \)
