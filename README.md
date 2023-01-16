@@ -1,15 +1,20 @@
 # 🔍 kensaku.vim
 
+[![Deno 1.28.0 or above](https://img.shields.io/badge/Deno-Support%201.28.0-yellowgreen.svg?logo=deno)](https://github.com/denoland/deno/tree/v1.28.0)
+[![Vim 9.0.0472 or above](https://img.shields.io/badge/Vim-Support%209.0.0472-yellowgreen.svg?logo=vim)](https://github.com/vim/vim/tree/v9.0.0472)
+[![Neovim 0.8.0 or above](https://img.shields.io/badge/Neovim-Support%200.8.0-yellowgreen.svg?logo=neovim&logoColor=white)](https://github.com/neovim/neovim/tree/v0.8.0)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![vim help](https://img.shields.io/badge/vim-%3Ah%20kensaku-orange.svg)](doc/kensaku.txt)
+[![test](https://github.com/lambdalisue/kensaku.vim/actions/workflows/test.yml/badge.svg)](https://github.com/lambdalisue/kensaku.vim/actions/workflows/test.yml)
 
-Migemo を利用してローマ字による日本語検索機能を提供するプラグインです。 他の
-Migemo プラグインと異なり JavaScript
-実装を利用しているため、プラグインのインストールのみで動作します。
+<div align="center">
 
-Kensaku (_kensaku.vim_) は Migemo を利用してローマ字のまま日本語検索を行うプラ
-グインです。既存の Migemo プラグインとは異なり JavaScript で実装された
-[jsmigemo][jsmigemo] を利用するため [C/Migemo][c/migemo]
-のインストールは不要です。
+![スクリーンキャスト](https://user-images.githubusercontent.com/546312/212752649-d97c3022-f6fc-4153-aac6-2537e3b31697.gif)
+
+</div>
+
+Kensaku (_kensaku.vim_) は Migemo を利用してローマ字のまま日本語検索を行うプラグインです。
+既存の Migemo プラグインとは異なり JavaScript で実装された [jsmigemo][jsmigemo] を利用するため [C/Migemo][c/migemo] のインストールは不要です。
 
 [jsmigemo]: https://github.com/oguna/jsmigemo
 [c/migemo]: https://www.kaoriya.net/software/cmigemo/
@@ -42,8 +47,7 @@ const pattern = await denops.dispatch("kensaku", "query", "kensaku");
 
 ### Vim script からの利用
 
-`kensaku#query()` を以下のように呼び出します。戻り値は JavaScript
-の正規表現なので、利用する場合は `\v` を前置する必要があります。
+`kensaku#query()` を以下のように呼び出します。戻り値は JavaScript の正規表現なので、利用する場合は `\v` を前置する必要があります。
 
 ```vim
 function! Search(value) abort
@@ -54,8 +58,7 @@ endfunction
 call Search(kensaku#query('kensaku'))
 ```
 
-上記は処理を同期的に待つので、非同期が必要な場合は代わりに
-`kensaku#query_async()` を利用します。
+上記は処理を同期的に待つので、非同期が必要な場合は代わりに `kensaku#query_async()` を利用します。
 
 ```vim
 function! Search(value) abort
