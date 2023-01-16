@@ -4,6 +4,11 @@ import { query } from "./migemo.ts";
 
 export function main(denops: Denops): void {
   denops.dispatcher = {
+    /**
+     * Migemo を利用して `value` (string) を検索するための正規表現 (string) を返します
+     *
+     * 必要になる辞書などは自動的にダウンロード・キャッシュします。
+     */
     query(value: unknown) {
       unknownutil.assertString(value);
       return query(denops, value);

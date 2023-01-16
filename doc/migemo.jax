@@ -10,6 +10,7 @@ CONTENTS					*migemo-contents*
 INTRODUCTION			|migemo-introduction|
 REQUIREMENTS			|migemo-requirements|
 INTERFACE			|migemo-interface|
+  COMMANDS			  |migemo-commands|
   VARIABLES			  |migemo-variables|
   FUNCTIONS			  |migemo-functions|
 
@@ -47,6 +48,25 @@ denops.vim~
 INTERFACE					*migemo-interface*
 
 -----------------------------------------------------------------------------
+COMMANDS					*migemo-commands*
+
+							*:Migemo*
+:Migemo [{query}]
+	Migemo にて {query} をローマ字として解釈しバッファ内検索を行います。
+	{query} が指定されなかった場合はプロンプトが開きます。
+>
+	:Migemo kensaku
+<
+	このコマンドは同期待ちするため "|" による処理継続が可能です
+>
+	:Migemo kensaku | normal! cgn
+<
+							*:MigemoAsync*
+:MigemoAsync [{query}]
+	|:Migemo| の非同期バージョンです。非同期のため "|" による処理継続はで
+	きません。
+
+-----------------------------------------------------------------------------
 VARIABLES					*migemo-variables*
 
 *g:migemo_dictionary_url*
@@ -70,14 +90,16 @@ FUNCTIONS					*migemo-functions*
 						*migemo#query()*
 migemo#query({value})
 	{value} を検索するための正規表現を返します。
+	結果を Vim スクリプトにて利用する場合は "\v" を前置して "very magic"
+	として利用してください (|/magic| 参照)。
 >
 	echo migemo#query('kensaku')
 <
 
 						*migemo#query_async()*
 migemo#query_async({value}, {success}[, {failure}])
-	{value} を検索するための正規表現を {success} コールバックに返します。
-	エラー時は {failure} コールバックが呼ばれます。
+	|migemo#query()| の非同期バージョンで、結果を {success} コールバックに
+	渡します。エラー時は {failure} コールバックが呼ばれます。
 >
 	call migemo#query_async(
 	      \ 'kensaku',
