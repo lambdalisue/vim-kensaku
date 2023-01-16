@@ -13,8 +13,10 @@
 
 </div>
 
-Kensaku (_kensaku.vim_) は Migemo を利用してローマ字のまま日本語検索を行うプラグインです。
-既存の Migemo プラグインとは異なり JavaScript で実装された [jsmigemo][jsmigemo] を利用するため [C/Migemo][c/migemo] のインストールは不要です。
+Kensaku (_kensaku.vim_) は Migemo
+を利用してローマ字のまま日本語検索を行うプラグインです。 既存の Migemo
+プラグインとは異なり JavaScript で実装された [jsmigemo][jsmigemo] を利用するため
+[C/Migemo][c/migemo] のインストールは不要です。
 
 [jsmigemo]: https://github.com/oguna/jsmigemo
 [c/migemo]: https://www.kaoriya.net/software/cmigemo/
@@ -47,7 +49,8 @@ const pattern = await denops.dispatch("kensaku", "query", "kensaku");
 
 ### Vim script からの利用
 
-`kensaku#query()` を以下のように呼び出します。戻り値は JavaScript の正規表現なので、利用する場合は `\v` を前置する必要があります。
+`kensaku#query()` を以下のように呼び出します。戻り値は JavaScript
+の正規表現なので、利用する場合は `\v` を前置する必要があります。
 
 ```vim
 function! Search(value) abort
@@ -58,7 +61,8 @@ endfunction
 call Search(kensaku#query('kensaku'))
 ```
 
-上記は処理を同期的に待つので、非同期が必要な場合は代わりに `kensaku#query_async()` を利用します。
+上記は処理を同期的に待つので、非同期が必要な場合は代わりに
+`kensaku#query_async()` を利用します。
 
 ```vim
 function! Search(value) abort
