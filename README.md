@@ -1,4 +1,4 @@
-# 🔍 migemo.vim
+# 🔍 kensaku.vim
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -6,13 +6,20 @@ Migemo を利用してローマ字による日本語検索機能を提供する�
 Migemo プラグインと異なり JavaScript
 実装を利用しているため、プラグインのインストールのみで動作します。
 
+Kensaku (_kensaku.vim_) は Migemo を利用してローマ字のまま日本語検索を行うプラ
+グインです。既存の Migemo プラグインとは異なり JavaScript で実装された
+[jsmigemo][] を利用するため [C/Migemo][C/Migemo] のインストールは不要です。
+
+[jemigemo]: https://github.com/oguna/jsmigemo
+[C/Migemo]: https://www.kaoriya.net/software/cmigemo/
+
 ## 利用方法
 
-以下の様に `:Migemo`
-コマンドを利用するとローマ字のまま日本語をバッファ内検索可能です。
+`:Kensaku`
+コマンドにクエリをローマ字として渡すと、バッファ内の日本語を検索できます。
 
 ```
-:Migemo kensaku
+:Kensaku kensaku
 ```
 
 ## 別プラグインからの利用
@@ -23,23 +30,36 @@ Migemo プラグインと異なり JavaScript
 を利用して `query` 関数を呼び出します。
 
 ```
-const pattern = await denops.dispatch("migemo", "query", "kensaku");
+const pattern = await denops.dispatch("kensaku", "query", "kensaku");
 ```
 
 ### Vim script からの利用
 
-`migemo#query()` を以下のように呼び出します。戻り値は JavaScript
+`kensaku#query()` を以下のように呼び出します。戻り値は JavaScript
 の正規表現なので、利用する場合は `\v` を前置する必要があります。
 
 ```vim
-let l:pattern = '\v' .. migemo#query('kensaku')
+function! Search(value) abort
+  let @/ = '\v' .. a:value
+  normal! n
+endfunction
+
+call Search(kensaku#query('kensaku'))
 ```
 
 上記は処理を同期的に待つので、非同期が必要な場合は代わりに
-`migemo#query_async()` を利用します。
+`kensaku#query_async()` を利用します。
 
 ```vim
-call migemo#query_async('kensaku', { v -> s:callback(v) })
+function! Search(value) abort
+  let @/ = '\v' .. a:value
+  normal! n
+endfunction
+
+call kensaku#query_async(
+      \ 'kensaku',
+      \ { v -> Search('/\v' .. v) },
+      \)
 ```
 
 ## 参考

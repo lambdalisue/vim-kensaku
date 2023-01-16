@@ -12,8 +12,8 @@ async function init(denops: Denops): Promise<jsmigemo.Migemo> {
   const [dictionaryUrl, dictionaryCache] = await batch.gather(
     denops,
     async (denops) => {
-      await vars.g.get(denops, "migemo_dictionary_url");
-      await vars.g.get(denops, "migemo_dictionary_cache");
+      await vars.g.get(denops, "kensaku_dictionary_url");
+      await vars.g.get(denops, "kensaku_dictionary_cache");
     },
   );
   unknownutil.assertString(dictionaryUrl);

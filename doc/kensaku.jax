@@ -1,0 +1,112 @@
+*kensaku.txt*				ローマ字のまま日本語検索を行う
+
+Author:  Alisue <lambdalisue@gmail.com>
+License: MIT License (See LICENSE)
+
+
+=============================================================================
+CONTENTS					*kensaku-contents*
+
+INTRODUCTION			|kensaku-introduction|
+REQUIREMENTS			|kensaku-requirements|
+INTERFACE			|kensaku-interface|
+  COMMANDS			  |kensaku-commands|
+  VARIABLES			  |kensaku-variables|
+  FUNCTIONS			  |kensaku-functions|
+
+
+=============================================================================
+INTRODUCTION					*kensaku-introduction*
+
+Kensaku (*kensaku.vim*) は Migemo を利用してローマ字のまま日本語検索を行うプラ
+グインです。既存の Migemo プラグインとは異なり JavaScript で実装されたjsmigemo
+を利用するため C/Migemo のインストールは不要です。
+
+jemigemo		https://github.com/oguna/jsmigemo
+cmigemo			https://www.kaoriya.net/software/cmigemo/
+
+
+=============================================================================
+REQUIREMENTS					*kensaku-requirements*
+
+Kensaku は denops プラグインとして作られているため denops.vim が必要です。
+
+denops.vim~
+	An ecosystem for writing Vim/Neovim plugin in Deno.
+	https://github.com/vim-denops/denops.vim
+
+
+=============================================================================
+INTERFACE					*kensaku-interface*
+
+-----------------------------------------------------------------------------
+COMMANDS					*kensaku-commands*
+
+							*:Kensaku*
+:Kensaku {query}
+	{query} をローマ字として解釈しバッファ内検索を行います。初回実行時は辞
+	書ファイルのダウンロードが行われるため少し時間がかかります。
+>
+	:Kensaku kensaku
+<
+	このコマンドは同期待ちするため "|" による処理継続が可能です
+>
+	:Kensaku kensaku | normal! cgn
+<
+							*:KensakuAsync*
+:KensakuAsync {query}
+	|:Kensaku| の非同期バージョンです。
+	非同期のため "|" による処理継続はできません。
+
+-----------------------------------------------------------------------------
+VARIABLES					*kensaku-variables*
+
+*g:kensaku_dictionary_url*
+	ダウンロードする辞書ファイルの URL です。
+	値を変更した場合は手動で |g:kensaku_dictionary_cache| に指定されている
+	ファイルを削除する必要があります。
+
+	デフォルトでは https://github.com/oguna/migemo-compact-dict-latest
+	の v0.2 を利用します。
+
+	Default: '...'
+
+*g:kensaku_dictionary_cache*
+	ダウンロードした辞書ファイルの格納先です。
+
+	Default: `~/.cache/kensaku.vim/migemo-compact-dict`
+
+-----------------------------------------------------------------------------
+FUNCTIONS					*kensaku-functions*
+
+						*kensaku#query()*
+kensaku#query({value})
+	{value} をローマ字として解釈し、検索するための正規表現を返します。
+	結果を Vim スクリプトにて利用する場合は "\v" を前置して "very magic"
+	として利用してください (|/magic| 参照)。
+>
+	function! Search(value) abort
+	  let @/ = '\v' .. a:value
+	  normal! n
+	endfunction
+
+	call Search(kensaku#query('kensaku'))
+<
+
+						*kensaku#query_async()*
+kensaku#query_async({value}, {success}[, {failure}])
+	|kensaku#query()| の非同期バージョンで、結果を {success} コールバックに
+	渡します。エラー時は {failure} コールバックが呼ばれます。
+>
+	function! Search(value) abort
+	  let @/ = '\v' .. a:value
+	  normal! n
+	endfunction
+
+	call kensaku#query_async(
+	      \ 'kensaku',
+	      \ { v -> Search('/\v' .. v) },
+	      \)
+<
+=============================================================================
+vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl
