@@ -23,7 +23,13 @@ function! s:search(value) abort
     return
   endif
   let @/ = '\v' .. a:value
-  normal! n
+  let v:errmsg = ''
+  silent! normal! n
+  if v:errmsg !=# ''
+    echohl ErrorMsg
+    echo v:errmsg
+    echohl None
+  endif
 endfunction
 
 function! s:failure(err) abort
