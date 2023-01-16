@@ -3,7 +3,7 @@ if exists('g:loaded_kensaku')
 endif
 let g:loaded_kensaku = 1
 
-command! -nargs=+ -bar Kensaku call kensaku#_search(<q-args>)
+command! -nargs=+ -bar Kensaku call kensaku#_search#search(<q-args>)
 
 function! s:define(name, default) abort
   let g:{a:name} = get(g:, a:name, a:default)
