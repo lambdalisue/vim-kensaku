@@ -1,4 +1,4 @@
-*kensaku.jax*				ローマ字のまま日本語検索を行う
+*kensaku.jax*				ローマ字による日本語検索機能を提供
 
 Author:  Alisue <lambdalisue@gmail.com>
 License: MIT License (See LICENSE)
@@ -10,27 +10,23 @@ CONTENTS					*kensaku-contents*
 INTRODUCTION			|kensaku-introduction|
 REQUIREMENTS			|kensaku-requirements|
 INTERFACE			|kensaku-interface|
-  COMMANDS			  |kensaku-commands|
   VARIABLES			  |kensaku-variables|
   FUNCTIONS			  |kensaku-functions|
-  MAPPINGS			  |kensaku-mappings|
 
 
 =============================================================================
 INTRODUCTION					*kensaku-introduction*
 
-Kensaku (*kensaku.vim*) は Migemo を利用してローマ字のまま日本語検索を行うプラ
-グインです。既存の Migemo プラグインとは異なり JavaScript で実装されたjsmigemo
-を利用するため C/Migemo のインストールは不要です。
+Kensaku (*kensaku.vim*) は Migemo を利用してローマ字のまま日本語検索を行う機能
+を提供するプラグインです。既存の Migemo プラグインとは異なり JavaScript で実装
+された jsmigemo を利用するため C/Migemo のインストールは不要です。
 
 jemigemo		https://github.com/oguna/jsmigemo
-cmigemo			https://www.kaoriya.net/software/cmigemo/
+C/Migemo		https://www.kaoriya.net/software/cmigemo/
 
 
 =============================================================================
 REQUIREMENTS					*kensaku-requirements*
-
-Kensaku は denops プラグインとして作られているため denops.vim が必要です。
 
 denops.vim~
 	An ecosystem for writing Vim/Neovim plugin in Deno.
@@ -39,23 +35,6 @@ denops.vim~
 
 =============================================================================
 INTERFACE					*kensaku-interface*
-
------------------------------------------------------------------------------
-COMMANDS					*kensaku-commands*
-
-							*:Kensaku*
-:Kensaku {query}
-	{query} をローマ字として解釈しバッファ内検索を行います。初回実行時は辞
-	書ファイルのダウンロードが行われるため少し時間がかかります。
->
-	:Kensaku kensaku
-<
-	このコマンドは同期待ちするため "|" による処理継続が可能です。
->
-	:Kensaku kensaku | set hlsearch
-<
-	オリジナル~
-	https://github.com/haya14busa/vim-migemo
 
 -----------------------------------------------------------------------------
 VARIABLES					*kensaku-variables*
@@ -91,7 +70,6 @@ kensaku#query({value})
 
 	call Search(kensaku#query('kensaku'))
 <
-
 						*kensaku#query_async()*
 kensaku#query_async({value}, {success}[, {failure}])
 	|kensaku#query()| の非同期バージョンで、結果を {success} コールバックに
@@ -107,23 +85,6 @@ kensaku#query_async({value}, {success}[, {failure}])
 	      \ function('Search'),
 	      \)
 <
------------------------------------------------------------------------------
-MAPPINGS					*kensaku-mappings*
-
-*<Plug>(kensaku-auto-replace)*
-	検索クエリ (|cmdline()| が返す文字列) にローマ字が含まれる場合に検索ク
-	エリを対応する正規表現に置き換える|:map-<expr>| のマッピング。
-	以下の様に <CR> にマッピングすることで検索クエリにローマ字が存在する
-	場合に自動で正規表現に置き換える。
->
-	cnoremap <CR> <Plug>(kensaku-auto-replace)<CR>
-<
-	なお <CR> の上書きになるため |cnoremap| を使って再帰を避ける必要がある
-	ことに注意。もし間違えて |cmap| などを利用してしまいコマンド入力ができ
-	なくなった場合は <CR> の代わりに <C-j> を利用して決定すれば良い。
-
-	オリジナル~
-	https://github.com/rhysd/migemo-search.vim
 
 =============================================================================
 vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl
