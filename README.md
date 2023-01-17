@@ -7,16 +7,11 @@
 [![vim help](https://img.shields.io/badge/vim-%3Ah%20kensaku-orange.svg)](doc/kensaku.jax)
 [![test](https://github.com/lambdalisue/kensaku.vim/actions/workflows/test.yml/badge.svg)](https://github.com/lambdalisue/kensaku.vim/actions/workflows/test.yml)
 
-<div align="center">
-
-![スクリーンキャスト](https://user-images.githubusercontent.com/546312/212752649-d97c3022-f6fc-4153-aac6-2537e3b31697.gif)
-
-</div>
-
 Kensaku (_kensaku.vim_) は Migemo
-を利用してローマ字のまま日本語検索を行うプラグインです。 既存の Migemo
-プラグインとは異なり JavaScript で実装された [jsmigemo][jsmigemo] を利用するため
-[C/Migemo][c/migemo] のインストールは不要です。
+を利用してローマ字のまま日本語検索を行う最低限の機能を提供するプラグインです。
+
+既存の Migemo プラグインとは異なり JavaScript で実装された [jsmigemo][jsmigemo]
+を利用するため [C/Migemo][c/migemo] のインストールは不要です。
 
 [jsmigemo]: https://github.com/oguna/jsmigemo
 [c/migemo]: https://www.kaoriya.net/software/cmigemo/
@@ -45,35 +40,21 @@ Plug 'lambdalisue/kensaku.vim'
 
 ## 利用方法
 
-`:Kensaku`
-コマンドにクエリをローマ字として渡すと、バッファ内の日本語を検索できます。
+### インテグレーションプラグイン
 
-```
-:Kensaku kensaku
-```
+必要なインターフェースを提供するインテグレーションプラグインを利用します。
 
-検索結果をハイライトしたい場合は以下の様に `| set hlsearch` を加えます。
-
-```
-:Kensaku kensaku | set hlsearch
-```
-
-### 検索クエリにローマ字が存在する場合に自動適用する
-
-`/` や `?` による検索の際に自動的に日本語検索を有効にしたい場合は、以下の様に
-`<CR>` のマッピングを定義してください。
-
-```vim
-cnoremap <CR> <Plug>(kensaku-auto-replace)<CR>
-```
-
-これにより検索クエリにローマ字が存在する場合は自動的に対応する正規表現に置き換わった状態で検索されます。
-
-なお、この機能は
-[rhysd/migemo-search.vim](https://github.com/rhysd/migemo-search.vim)
-で実装されていたものを少しアレンジしたものです。
-
-## 別プラグインからの利用
+- [lambdalisue/kensaku-command.vim](https://github.com/lambdalisue/kensaku-command.vim)<br>ローマ字によるバッファ内日本語検索を行う
+  `Kensaku` コマンドを提供するプラグイン
+- [lambdalisue/kensaku-search.vim](https://github.com/lambdalisue/kensaku-search.vim)<br>
+  `/` や `?` による検索にローマ字による日本語検索を自然に提供するプラグイン
+- [Milly/ddu-filter-kensaku](https://github.com/Milly/ddu-filter-kensaku)<br>
+  [Shougo/ddu.vim](https://github.com/Shougo/ddu.vim)
+  にてローマ字による日本語フィルタを有効にするプラグイン
+- [ompugao/ctrlp-kensaku](https://github.com/ompugao/ctrlp-kensaku)<br>
+  [kien/ctrlp.vim](https://github.com/kien/ctrlp.vim)
+  にてローマ字による日本語フィルタを有効にするプラグイン
+- [yuki-yano/fuzzy-motion.vim](https://github.com/yuki-yano/fuzzy-motion.vim)<br>バッファ内の任意の場所にジャンプする際にローマ字指定で日本語を指定可能
 
 ### TypeScript からの利用 (denops)
 
@@ -118,11 +99,6 @@ call kensaku#query_async(
 - [Migemo: ローマ字のまま日本語をインクリメンタル検索](http://0xcc.net/migemo/)
 - [辞書構造を工夫した Migemo 実装の紹介](https://qiita.com/oguna/items/c70e8c409b663d74113e)
 - [Vim で migemo を使って日本語でもローマ字のまま検索がしたい](http://haya14busa.com/vim_migemo_search/)
-
-## 競合プラグイン
-
-- [haya14busa/vim-migemo](https://github.com/haya14busa/vim-migemo)
-- [rhysd/migemo-search.vim](https://github.com/rhysd/migemo-search.vim)
 
 ## License
 
