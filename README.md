@@ -10,8 +10,8 @@
 Kensaku (_kensaku.vim_) は Migemo
 を利用してローマ字のまま日本語検索を行う最低限の機能を提供するプラグインです。
 
-既存の Migemo プラグインとは異なり JavaScript で実装された [jsmigemo][jsmigemo] を利用するため
-[C/Migemo][c/migemo] のインストールは不要です。
+既存の Migemo プラグインとは異なり JavaScript で実装された [jsmigemo][jsmigemo]
+を利用するため [C/Migemo][c/migemo] のインストールは不要です。
 
 [jsmigemo]: https://github.com/oguna/jsmigemo
 [c/migemo]: https://www.kaoriya.net/software/cmigemo/
@@ -44,10 +44,16 @@ Plug 'lambdalisue/kensaku.vim'
 
 必要なインターフェースを提供するインテグレーションプラグインを利用します。
 
-- [lambdalisue/kensaku-command.vim](https://github.com/lambdalisue/kensaku-command.vim)<br>ローマ字によるバッファ内日本語検索を行う `Kensaku` コマンドを提供するプラグイン
-- [lambdalisue/kensaku-search.vim](https://github.com/lambdalisue/kensaku-search.vim)<br>`/` や `?` による検索にローマ字による日本語検索を自然に提供するプラグイン
-- [Milly/ddu-filter-kensaku](https://github.com/Milly/ddu-filter-kensaku)<br>[Shougo/ddu.vim](https://github.com/Shougo/ddu.vim) にてローマ字による日本語フィルタを有効にするプラグイン
-- [ompugao/ctrlp-kensaku](https://github.com/ompugao/ctrlp-kensaku)<br>[kien/ctrlp.vim](https://github.com/kien/ctrlp.vim) にてローマ字による日本語フィルタを有効にするプラグイン
+- [lambdalisue/kensaku-command.vim](https://github.com/lambdalisue/kensaku-command.vim)<br>ローマ字によるバッファ内日本語検索を行う
+  `Kensaku` コマンドを提供するプラグイン
+- [lambdalisue/kensaku-search.vim](https://github.com/lambdalisue/kensaku-search.vim)<br>
+  `/` や `?` による検索にローマ字による日本語検索を自然に提供するプラグイン
+- [Milly/ddu-filter-kensaku](https://github.com/Milly/ddu-filter-kensaku)<br>
+  [Shougo/ddu.vim](https://github.com/Shougo/ddu.vim)
+  にてローマ字による日本語フィルタを有効にするプラグイン
+- [ompugao/ctrlp-kensaku](https://github.com/ompugao/ctrlp-kensaku)<br>
+  [kien/ctrlp.vim](https://github.com/kien/ctrlp.vim)
+  にてローマ字による日本語フィルタを有効にするプラグイン
 - [yuki-yano/fuzzy-motion.vim](https://github.com/yuki-yano/fuzzy-motion.vim)<br>バッファ内の任意の場所にジャンプする際にローマ字指定で日本語を指定可能
 
 ### TypeScript からの利用 (denops)
