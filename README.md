@@ -52,7 +52,7 @@ Plug 'lambdalisue/kensaku.vim'
   [Shougo/ddu.vim](https://github.com/Shougo/ddu.vim)
   にてローマ字による日本語フィルタを有効にするプラグイン
 - [ompugao/ctrlp-kensaku](https://github.com/ompugao/ctrlp-kensaku)<br>
-  [kien/ctrlp.vim](https://github.com/kien/ctrlp.vim)
+  [ctrlpvim/ctrlp.vim](https://github.com/ctrlpvim/ctrlp.vim)
   にてローマ字による日本語フィルタを有効にするプラグイン
 - [yuki-yano/fuzzy-motion.vim](https://github.com/yuki-yano/fuzzy-motion.vim)<br>バッファ内の任意の場所にジャンプする際にローマ字指定で日本語を指定可能
 
