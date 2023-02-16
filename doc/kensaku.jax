@@ -86,5 +86,20 @@ kensaku#query_async({value}, {success}[, {failure}])
 	      \)
 <
 
+						*kensaku#set_roman_table()*
+kensaku#set_roman_table({romanTable})
+	ローマ字の変換ルールを定義します。azikなどに対応できます。
+	{romanTable}は、[roman: string, hiragana: string, remain: number?]の配
+	列です。romanがhiraganaに変換され、remainの数だけromanが残ります。例え
+	ば、["qq", "っ", 1]は、「qq」を入力すると「っq」に変換されるルールにな
+	ります。remainは省略可能で、その場合は0になります。
+>
+	call kensaku#set_roman_table([
+	      \ ["qq", "っ", 1],
+	      \ ["kz", "かん", 0],
+	      \ ...
+	      \])
+<
+
 =============================================================================
 vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl

@@ -4,7 +4,7 @@ import * as fs from "https://deno.land/std@0.172.0/fs/mod.ts";
 import * as unknownutil from "https://deno.land/x/unknownutil@v2.1.0/mod.ts";
 import * as batch from "https://deno.land/x/denops_std@v4.0.0/batch/mod.ts";
 import * as vars from "https://deno.land/x/denops_std@v4.0.0/variable/mod.ts";
-import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.3/dist/jsmigemo.min.mjs";
+import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.4/dist/jsmigemo.min.mjs";
 
 let migemo: jsmigemo.Migemo | undefined;
 
@@ -42,9 +42,26 @@ async function readOrFetch(url: string, cache: string): Promise<Uint8Array> {
   }
 }
 
-export async function query(denops: Denops, value: string): Promise<string> {
+async function getMigemo(denops: Denops): Promise<jsmigemo.Migemo> {
   if (!migemo) {
     migemo = await init(denops);
   }
+  return migemo;
+}
+
+export async function query(denops: Denops, value: string): Promise<string> {
+  const migemo = await getMigemo(denops);
   return migemo.query(value);
+}
+
+export async function setRomanTable(
+  denops: Denops,
+  romanTable: [string, string, number?][],
+): Promise<void> {
+  const migemo = await getMigemo(denops);
+  const romanEntries = romanTable.map(([a, b, c]) =>
+    new jsmigemo.RomanEntry(a, b, c || 0)
+  );
+  const rp = new jsmigemo.RomajiProcessor1(romanEntries);
+  migemo.setRomajiProcessor(rp);
 }
