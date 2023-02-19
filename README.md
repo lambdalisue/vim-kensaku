@@ -67,12 +67,11 @@ const pattern = await denops.dispatch("kensaku", "query", "kensaku");
 
 ### Vim script からの利用
 
-`kensaku#query()` を以下のように呼び出します。戻り値は JavaScript
-の正規表現なので、利用する場合は `\v` を前置する必要があります。
+`kensaku#query()` を以下のように呼び出します。
 
 ```vim
 function! Search(value) abort
-  let @/ = '\v' .. a:value
+  let @/ = a:value
   normal! n
 endfunction
 
@@ -84,7 +83,7 @@ call Search(kensaku#query('kensaku'))
 
 ```vim
 function! Search(value) abort
-  let @/ = '\v' .. a:value
+  let @/ = a:value
   normal! n
 endfunction
 

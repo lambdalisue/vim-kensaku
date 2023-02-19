@@ -1,10 +1,10 @@
 import type { Denops } from "https://deno.land/x/denops_std@v4.0.0/mod.ts";
 import * as path from "https://deno.land/std@0.172.0/path/mod.ts";
 import * as fs from "https://deno.land/std@0.172.0/fs/mod.ts";
-import * as unknownutil from "https://deno.land/x/unknownutil@v2.1.0/mod.ts";
+import * as u from "https://deno.land/x/unknownutil@v2.1.0/mod.ts";
 import * as batch from "https://deno.land/x/denops_std@v4.0.0/batch/mod.ts";
 import * as vars from "https://deno.land/x/denops_std@v4.0.0/variable/mod.ts";
-import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.4/dist/jsmigemo.min.mjs";
+import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.6/dist/jsmigemo.min.mjs";
 
 let migemo: jsmigemo.Migemo | undefined;
 
@@ -16,8 +16,8 @@ async function init(denops: Denops): Promise<jsmigemo.Migemo> {
       await vars.g.get(denops, "kensaku_dictionary_cache");
     },
   );
-  unknownutil.assertString(dictionaryUrl);
-  unknownutil.assertString(dictionaryCache);
+  u.assertString(dictionaryUrl);
+  u.assertString(dictionaryCache);
 
   const data = await readOrFetch(dictionaryUrl, dictionaryCache);
   const dict = new jsmigemo.CompactDictionary(data.buffer);
@@ -49,8 +49,30 @@ async function getMigemo(denops: Denops): Promise<jsmigemo.Migemo> {
   return migemo;
 }
 
-export async function query(denops: Denops, value: string): Promise<string> {
+type Rxop = [string, string, string, string, string, string];
+
+type QueryOption = {
+  rxop?: Rxop;
+};
+
+export function assertQueryOption(x: unknown): asserts x is QueryOption {
+  if (
+    !(u.isObject(x) &&
+      (x.rxop == null || u.isArray(x.rxop, u.isString) && x.rxop.length === 6))
+  ) {
+    throw new Error("Not a QueryOption");
+  }
+}
+
+const rxopJavaScript = ["|", "(?:", ")", "[", "]", ""];
+
+export async function query(
+  denops: Denops,
+  value: string,
+  option: QueryOption = {},
+): Promise<string> {
   const migemo = await getMigemo(denops);
+  migemo.setRxop(option.rxop || rxopJavaScript);
   return migemo.query(value);
 }
 

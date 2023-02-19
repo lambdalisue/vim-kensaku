@@ -54,36 +54,81 @@ VARIABLES					*kensaku-variables*
 
 	Default: `~/.cache/kensaku.vim/migemo-compact-dict`
 
+*g:kensaku#rxop#vim*
+*g:kensaku#rxop#javascript*
+	正規表現で使う記号のプリセットです。 |kensaku#query()| で使用します。
+>
+	call kensaku#query("kensaku", {
+	      \ 'rxop': g:kensaku#rxop#vim,
+	      \})
+	call kensaku#query("kensaku", {
+	      \ 'rxop': g:kensaku#rxop#javascript,
+	      \})
+<
+
 -----------------------------------------------------------------------------
 FUNCTIONS					*kensaku-functions*
 
 						*kensaku#query()*
-kensaku#query({value})
+kensaku#query({value}[, {option}])
 	{value} をローマ字として解釈し、検索するための正規表現を返します。
-	結果を Vim スクリプトにて利用する場合は "\v" を前置して "very magic"
-	として利用してください (|/magic| 参照)。
 >
 	function! Search(value) abort
-	  let @/ = '\v' .. a:value
+	  let @/ = a:value
 	  normal! n
 	endfunction
 
 	call Search(kensaku#query('kensaku'))
 <
+	{option} には以下のパラメータがあります。
+
+	"rxop"	正規表現に利用する記号文字のリストです。
+		"[or, startGroup, endGroup, startClass, endClass, newline]" で
+		表され、それぞれ以下の意味を持ちます。
+		or		選択子 (alternation operator)。|/bar|
+		startGroup	グループ化の開始。|/\(|
+		endGroup	グループ化の終了。|/\)|
+		startClass	文字クラスの開始。|/\[]|
+		endClass	文字クラスの終了。|/\[]|
+		newline		行末。|/\_s|
+		デフォルト: |g:kensaku#rxop#vim|
+>
+	" :grep で kensaku.vim を使う
+	command! -nargs=1 KensakuGrep call KensakuGrep(<q-args>)
+
+	function! KensakuGrep(input) abort
+	  if !executable('rg')
+	    return
+	  endif
+	  let grepprg = &grepprg
+	  set grepprg=rg\ -e\ $*\ --vimgrep
+	  " :execute は '|' でコマンドを区切るのでエスケープ
+	  execute 'grep' kensaku#query(a:input, {
+	        \ 'rxop': ['\|', '(', ')', '[', ']', ''],
+	        \})
+	  let &grepprg = grepprg
+	endfunction
+<
+
 						*kensaku#query_async()*
-kensaku#query_async({value}, {success}[, {failure}])
+kensaku#query_async({value}, {success}[, {option}])
 	|kensaku#query()| の非同期バージョンで、結果を {success} コールバックに
-	渡します。エラー時は {failure} コールバックが呼ばれます。
+	渡します。
+
+	{option} には以下のパラメータがあります。
+
+	"rxop"		|kensaku#query()| と同じです。
+	"failure"	エラー時に呼ばれるコールバック関数です。
 >
 	function! Search(value) abort
-	  let @/ = '\v' .. a:value
+	  let @/ = a:value
 	  normal! n
 	endfunction
 
-	call kensaku#query_async(
-	      \ 'kensaku',
-	      \ function('Search'),
-	      \)
+	call kensaku#query_async('kensaku', function('Search'), {
+	      \ 'failure': { e -> ...},
+	      \ 'rxop': ...,
+	      \})
 <
 
 						*kensaku#set_roman_table()*
