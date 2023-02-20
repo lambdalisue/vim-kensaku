@@ -6,11 +6,21 @@ function! kensaku#query(value) abort
 endfunction
 
 function! kensaku#query_async(value, success, ...) abort
-  let l:Failure = a:0 ? a:1 : { e -> s:failure(e) }
-  return denops#request_async('kensaku', 'query', [a:value], a:success, l:Failure)
+  let l:Failure = a:0 ? a:1 : funcref('s:failure')
+  return denops#request_async(
+        \ 'kensaku',
+        \ 'query',
+        \ [a:value],
+        \ { v -> a:success(v) },
+        \ { e -> l:Failure(e) },
+        \)
 endfunction
 
 function! kensaku#set_roman_table(romanTable) abort
   call denops#plugin#wait_async('kensaku', {
         \ -> denops#notify('kensaku', 'setRomanTable', [a:romanTable]) })
+endfunction
+
+function! s:failure(err) abort
+  echoerr a:err
 endfunction
