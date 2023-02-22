@@ -87,10 +87,9 @@ function! Search(value) abort
   normal! n
 endfunction
 
-call kensaku#query_async(
-      \ 'kensaku',
-      \ { v -> Search(v) },
-      \)
+call kensaku#query_async('kensaku', {
+      \ 'failure': { v -> Search(v) },
+      \})
 ```
 
 ## v2 との違い
