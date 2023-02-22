@@ -67,12 +67,11 @@ const pattern = await denops.dispatch("kensaku", "query", "kensaku");
 
 ### Vim script からの利用
 
-`kensaku#query()` を以下のように呼び出します。戻り値は JavaScript
-の正規表現なので、利用する場合は `\v` を前置する必要があります。
+`kensaku#query()` を以下のように呼び出します。
 
 ```vim
 function! Search(value) abort
-  let @/ = '\v' .. a:value
+  let @/ = a:value
   normal! n
 endfunction
 
@@ -84,7 +83,7 @@ call Search(kensaku#query('kensaku'))
 
 ```vim
 function! Search(value) abort
-  let @/ = '\v' .. a:value
+  let @/ = a:value
   normal! n
 endfunction
 
@@ -93,6 +92,15 @@ call kensaku#query_async(
       \ { v -> Search(v) },
       \)
 ```
+
+## v2 との違い
+
+Kensaku [v2](https://github.com/lambdalisue/kensaku.vim/tree/v2) までは
+`kensaku#query()` などで返す正規表現は JavaScript のものだったため `\v`
+を前置することで Very magic を指定する必要がありました。 Kensaku v3 からは
+`kensaku#query()` は Vim script の正規表現を返すように変更されたので `\v`
+の前置が不要になりました。 なおプラグイン作者などが利用する `denops.dispatch()`
+経由での呼び出しは依然として JavaScript の正規表現を返します。
 
 ## 参考情報
 
