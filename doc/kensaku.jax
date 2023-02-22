@@ -65,10 +65,6 @@ VARIABLES					*kensaku-variables*
 	      \ 'rxop': g:kensaku#rxop#javascript,
 	      \})
 <
-*g:kensaku_disable_v3_migration_warning*
-	Kensaku v3 で適用された破壊的変更に関する警告メッセージを非表示にしま
-	す。なお、このメッセージ自体は v3.0.1 以降で削除される予定です。
-
 -----------------------------------------------------------------------------
 FUNCTIONS					*kensaku-functions*
 
@@ -77,7 +73,7 @@ kensaku#query({value}[, {option}])
 	{value} をローマ字として解釈し、検索するための正規表現を返します。
 >
 	function! Search(value) abort
-	  let @/ = '\m' .. a:value
+	  let @/ = a:value
 	  normal! n
 	endfunction
 
@@ -86,14 +82,18 @@ kensaku#query({value}[, {option}])
 	{option} には以下のパラメータがあります。
 
 	"rxop"	正規表現に利用する記号文字のリストです。
-		"[or, startGroup, endGroup, startClass, endClass, newline]" で
-		表され、それぞれ以下の意味を持ちます。
+		"[or, startGroup, endGroup, startClass, endClass, newline]" or
+		"[prefix, or, startGroup, endGroup, startClass, endClass,
+		newline]" で表され、それぞれ以下の意味を持ちます。
+
+		prefix		正規表現前に前置する文字列。未指定時は空文字。
 		or		選択子 (alternation operator)。|/bar|
 		startGroup	グループ化の開始。|/\(|
 		endGroup	グループ化の終了。|/\)|
 		startClass	文字クラスの開始。|/\[]|
 		endClass	文字クラスの終了。|/\[]|
 		newline		行末。|/\_s|
+
 		デフォルト: |g:kensaku#rxop#vim|
 >
 	" :grep で kensaku.vim を使う
@@ -124,7 +124,7 @@ kensaku#query_async({value}, {success}[, {option}])
 	"failure"	エラー時に呼ばれるコールバック関数です。
 >
 	function! Search(value) abort
-	  let @/ = '\m' .. a:value
+	  let @/ = a:value
 	  normal! n
 	endfunction
 

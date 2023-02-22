@@ -71,7 +71,7 @@ const pattern = await denops.dispatch("kensaku", "query", "kensaku");
 
 ```vim
 function! Search(value) abort
-  let @/ = '\m' .. a:value
+  let @/ = a:value
   normal! n
 endfunction
 
@@ -83,7 +83,7 @@ call Search(kensaku#query('kensaku'))
 
 ```vim
 function! Search(value) abort
-  let @/ = '\m' .. a:value
+  let @/ = a:value
   normal! n
 endfunction
 
@@ -92,15 +92,12 @@ call kensaku#query_async('kensaku', {
       \})
 ```
 
-## v2 との違い
+## 正規表現モードに関して (magic/very magic)
 
-Kensaku [v2](https://github.com/lambdalisue/kensaku.vim/tree/v2) までは
-`kensaku#query()` などで返す正規表現は JavaScript のものだったため `\v`
-を前置することで Very magic を指定する必要がありました。 Kensaku v3 からは
-`kensaku#query()` は Vim script の正規表現を返すように変更されたので `\v`
-の代わりに `\m` を前置します。 なおプラグイン作者などが利用する
-`denops.dispatch()` 経由での呼び出しは依然として JavaScript
-の正規表現を返します。
+`kensaku#query()` がデフォルトで返す正規表現には `\m` が含まれるようになったため
+`\v` や `\m` の前置が不要になりました。 なお、この挙動はデフォルトの `"rxop"`
+(`g:kensaku#rxop#vim`) で定義されているため、カスタムの `"rxop"`
+を指定した場合は別です。
 
 ## 参考情報
 
