@@ -1,4 +1,4 @@
-function! kensaku#query(value) abort
+function! kensaku#query(value, ...) abort
   if denops#plugin#wait('kensaku') isnot# 0
     return ''
   endif
