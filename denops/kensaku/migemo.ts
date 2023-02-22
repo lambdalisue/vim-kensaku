@@ -49,7 +49,9 @@ async function getMigemo(denops: Denops): Promise<jsmigemo.Migemo> {
   return migemo;
 }
 
-type Rxop = [string, string, string, string, string, string];
+type Rxop =
+  | [string, string, string, string, string, string]
+  | [string, string, string, string, string, string, string];
 
 type QueryOption = {
   rxop?: Rxop;
@@ -58,7 +60,9 @@ type QueryOption = {
 export function assertQueryOption(x: unknown): asserts x is QueryOption {
   if (
     !(u.isObject(x) &&
-      (x.rxop == null || u.isArray(x.rxop, u.isString) && x.rxop.length === 6))
+      (x.rxop == null ||
+        u.isArray(x.rxop, u.isString) &&
+          (x.rxop.length === 6 || x.rxop.length === 7)))
   ) {
     throw new Error("Not a QueryOption");
   }
@@ -72,8 +76,10 @@ export async function query(
   option: QueryOption = {},
 ): Promise<string> {
   const migemo = await getMigemo(denops);
+  const rxop = option.rxop || rxopJavaScript;
+  const prefix = rxop.length === 7 ? rxop.shift() : "";
   migemo.setRxop(option.rxop || rxopJavaScript);
-  return migemo.query(value);
+  return prefix + migemo.query(value);
 }
 
 export async function setRomanTable(
