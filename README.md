@@ -87,9 +87,10 @@ function! Search(value) abort
   normal! n
 endfunction
 
-call kensaku#query_async('kensaku', {
-      \ 'failure': { v -> Search(v) },
-      \})
+call kensaku#query_async(
+      \ 'kensaku',
+      \ { v -> Search(v) },
+      \)
 ```
 
 ## 正規表現モードに関して (magic/very magic)
