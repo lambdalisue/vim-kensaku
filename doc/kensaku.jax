@@ -65,10 +65,6 @@ VARIABLES					*kensaku-variables*
 	      \ 'rxop': g:kensaku#rxop#javascript,
 	      \})
 <
-*g:kensaku_disable_v3_migration_warning*
-	Kensaku v3 で適用された破壊的変更に関する警告メッセージを非表示にしま
-	す。なお、このメッセージ自体は v3.0.1 以降で削除される予定です。
-
 -----------------------------------------------------------------------------
 FUNCTIONS					*kensaku-functions*
 
