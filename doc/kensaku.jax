@@ -77,7 +77,7 @@ kensaku#query({value}[, {option}])
 	{value} をローマ字として解釈し、検索するための正規表現を返します。
 >
 	function! Search(value) abort
-	  let @/ = a:value
+	  let @/ = '\m' .. a:value
 	  normal! n
 	endfunction
 
@@ -124,7 +124,7 @@ kensaku#query_async({value}, {success}[, {option}])
 	"failure"	エラー時に呼ばれるコールバック関数です。
 >
 	function! Search(value) abort
-	  let @/ = a:value
+	  let @/ = '\m' .. a:value
 	  normal! n
 	endfunction
 
