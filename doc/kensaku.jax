@@ -106,9 +106,9 @@ kensaku#query({value}[, {option}])
 	  let grepprg = &grepprg
 	  set grepprg=rg\ -e\ $*\ --vimgrep
 	  " :execute は '|' でコマンドを区切るのでエスケープ
-	  execute 'grep' kensaku#query(a:input, {
+	  execute 'grep' string(kensaku#query(a:input, {
 	        \ 'rxop': ['\|', '(', ')', '[', ']', ''],
-	        \})
+	        \}))
 	  let &grepprg = grepprg
 	endfunction
 <
