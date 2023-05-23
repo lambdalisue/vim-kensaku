@@ -9,12 +9,12 @@ import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.6/dist/jsmi
 let migemo: jsmigemo.Migemo | undefined;
 
 async function init(denops: Denops): Promise<jsmigemo.Migemo> {
-  const [dictionaryUrl, dictionaryCache] = await batch.gather(
+  const [dictionaryUrl, dictionaryCache] = await batch.collect(
     denops,
-    async (denops) => {
-      await vars.g.get(denops, "kensaku_dictionary_url");
-      await vars.g.get(denops, "kensaku_dictionary_cache");
-    },
+    (denops) => [
+      vars.g.get(denops, "kensaku_dictionary_url"),
+      vars.g.get(denops, "kensaku_dictionary_cache"),
+    ],
   );
   u.assertString(dictionaryUrl);
   u.assertString(dictionaryCache);
