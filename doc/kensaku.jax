@@ -81,10 +81,10 @@ kensaku#query({value}[, {option}])
 <
 	{option} には以下のパラメータがあります。
 
-	"rxop"	正規表現に利用する記号文字のリストです。
-		"[or, startGroup, endGroup, startClass, endClass, newline]" or
-		"[prefix, or, startGroup, endGroup, startClass, endClass,
-		newline]" で表され、それぞれ以下の意味を持ちます。
+	"rxop"	正規表現に利用する記号文字の辞書です。
+		"#{prefix?, or, startGroup, endGroup, startClass, endClass,
+		newline, escape}" (? は省略可能) で表され、それぞれ以下の意味
+		を持ちます。
 
 		prefix		正規表現前に前置する文字列。未指定時は空文字。
 		or		選択子 (alternation operator)。|/bar|
@@ -93,6 +93,13 @@ kensaku#query({value}[, {option}])
 		startClass	文字クラスの開始。|/\[]|
 		endClass	文字クラスの終了。|/\[]|
 		newline		行末。|/\_s|
+		escape		辞書に含まれる文字のうち、'\' でエスケープする
+				対象。
+
+		kensaku v3 以前で利用していた "[or, startGroup, endGroup,
+		startClass, endClass, newline, escape]" or "[prefix, or,
+		startGroup, endGroup, startClass, endClass, newline, escape]"
+		で表される記号文字リストも利用可能ですが非推奨です。
 
 		デフォルト: |g:kensaku#rxop#vim|
 >
@@ -106,8 +113,16 @@ kensaku#query({value}[, {option}])
 	  let grepprg = &grepprg
 	  set grepprg=rg\ -e\ $*\ --vimgrep
 	  " :execute は '|' でコマンドを区切るのでエスケープ
-	  execute 'grep' string(kensaku#query(a:input, {
-	        \ 'rxop': ['\|', '(', ')', '[', ']', ''],
+	  execute 'grep' string(kensaku#query(a:input, #{
+	        \ rxop: #{
+	        \   or: '\|',
+	        \   startGroup: '(',
+	        \   endGroup: ')',
+	        \   startClass: '[',
+	        \   endClass: ']',
+	        \   newline: '',
+	        \   escape: '\\.[]{}()*+-?^$|',
+	        \ },
 	        \}))
 	  let &grepprg = grepprg
 	endfunction

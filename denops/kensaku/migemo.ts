@@ -1,23 +1,38 @@
-import type { Denops } from "https://deno.land/x/denops_std@v4.0.0/mod.ts";
-import * as path from "https://deno.land/std@0.172.0/path/mod.ts";
-import * as fs from "https://deno.land/std@0.172.0/fs/mod.ts";
-import * as u from "https://deno.land/x/unknownutil@v2.1.0/mod.ts";
-import * as batch from "https://deno.land/x/denops_std@v4.0.0/batch/mod.ts";
-import * as vars from "https://deno.land/x/denops_std@v4.0.0/variable/mod.ts";
-import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.6/dist/jsmigemo.min.mjs";
+import type { Denops } from "https://deno.land/x/denops_std@v5.0.0/mod.ts";
+import {
+  assertString,
+  isObject,
+  isUndefined,
+} from "https://deno.land/x/unknownutil@v2.1.1/mod.ts";
+import * as path from "https://deno.land/std@0.188.0/path/mod.ts";
+import * as fs from "https://deno.land/std@0.188.0/fs/mod.ts";
+import * as batch from "https://deno.land/x/denops_std@v5.0.0/batch/mod.ts";
+import * as vars from "https://deno.land/x/denops_std@v5.0.0/variable/mod.ts";
+import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.7/dist/jsmigemo.min.mjs";
+import { decompose, isKensakuRxop, KensakuRxop } from "./rxop.ts";
 
 let migemo: jsmigemo.Migemo | undefined;
 
+const defaultRxop = {
+  or: "|",
+  startGroup: "(?:",
+  endGroup: ")",
+  startClass: "[",
+  endClass: "]",
+  newline: "",
+  escape: "\\.[]{}()*+-?^$|",
+};
+
 async function init(denops: Denops): Promise<jsmigemo.Migemo> {
-  const [dictionaryUrl, dictionaryCache] = await batch.gather(
+  const [dictionaryUrl, dictionaryCache] = await batch.collect(
     denops,
-    async (denops) => {
-      await vars.g.get(denops, "kensaku_dictionary_url");
-      await vars.g.get(denops, "kensaku_dictionary_cache");
-    },
+    (denops) => [
+      vars.g.get(denops, "kensaku_dictionary_url"),
+      vars.g.get(denops, "kensaku_dictionary_cache"),
+    ],
   );
-  u.assertString(dictionaryUrl);
-  u.assertString(dictionaryCache);
+  assertString(dictionaryUrl);
+  assertString(dictionaryCache);
 
   const data = await readOrFetch(dictionaryUrl, dictionaryCache);
   const dict = new jsmigemo.CompactDictionary(data.buffer);
@@ -49,26 +64,15 @@ async function getMigemo(denops: Denops): Promise<jsmigemo.Migemo> {
   return migemo;
 }
 
-type Rxop =
-  | [string, string, string, string, string, string]
-  | [string, string, string, string, string, string, string];
-
-type QueryOption = {
-  rxop?: Rxop;
+export type QueryOption = {
+  rxop?: KensakuRxop;
 };
 
 export function assertQueryOption(x: unknown): asserts x is QueryOption {
-  if (
-    !(u.isObject(x) &&
-      (x.rxop == null ||
-        u.isArray(x.rxop, u.isString) &&
-          (x.rxop.length === 6 || x.rxop.length === 7)))
-  ) {
+  if (!isObject(x) || (!isUndefined(x.rxop) && !isKensakuRxop(x.rxop))) {
     throw new Error("Not a QueryOption");
   }
 }
-
-const rxopJavaScript = ["|", "(?:", ")", "[", "]", ""];
 
 export async function query(
   denops: Denops,
@@ -76,15 +80,14 @@ export async function query(
   option: QueryOption = {},
 ): Promise<string> {
   const migemo = await getMigemo(denops);
-  const rxop = option.rxop || rxopJavaScript;
-  const prefix = rxop.length === 7 ? rxop.shift() : "";
-  migemo.setRxop(option.rxop || rxopJavaScript);
+  const [prefix, rxop] = decompose(option.rxop || defaultRxop);
+  migemo.setRxop(rxop);
   return prefix + migemo.query(value);
 }
 
 export async function setRomanTable(
   denops: Denops,
-  romanTable: [string, string, number?][],
+  romanTable: [roman: string, hiragana: string, remain?: number][],
 ): Promise<void> {
   const migemo = await getMigemo(denops);
   const romanEntries = romanTable.map(([a, b, c]) =>
