@@ -4,7 +4,7 @@ import * as fs from "https://deno.land/std@0.172.0/fs/mod.ts";
 import * as u from "https://deno.land/x/unknownutil@v2.1.0/mod.ts";
 import * as batch from "https://deno.land/x/denops_std@v4.0.0/batch/mod.ts";
 import * as vars from "https://deno.land/x/denops_std@v4.0.0/variable/mod.ts";
-import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.6/dist/jsmigemo.min.mjs";
+import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.7/dist/jsmigemo.min.mjs";
 
 let migemo: jsmigemo.Migemo | undefined;
 
@@ -50,8 +50,8 @@ async function getMigemo(denops: Denops): Promise<jsmigemo.Migemo> {
 }
 
 type Rxop =
-  | [string, string, string, string, string, string]
-  | [string, string, string, string, string, string, string];
+  | [string, string, string, string, string, string, string]
+  | [string, string, string, string, string, string, string, string];
 
 type QueryOption = {
   rxop?: Rxop;
@@ -62,13 +62,13 @@ export function assertQueryOption(x: unknown): asserts x is QueryOption {
     !(u.isObject(x) &&
       (x.rxop == null ||
         u.isArray(x.rxop, u.isString) &&
-          (x.rxop.length === 6 || x.rxop.length === 7)))
+          (x.rxop.length === 7 || x.rxop.length === 8)))
   ) {
     throw new Error("Not a QueryOption");
   }
 }
 
-const rxopJavaScript = ["|", "(?:", ")", "[", "]", ""];
+const rxopJavaScript = ["|", "(?:", ")", "[", "]", "", "\\.[]{}()*+-?^$|"];
 
 export async function query(
   denops: Denops,
@@ -77,7 +77,7 @@ export async function query(
 ): Promise<string> {
   const migemo = await getMigemo(denops);
   const rxop = option.rxop || rxopJavaScript;
-  const prefix = rxop.length === 7 ? rxop.shift() : "";
+  const prefix = rxop.length === 8 ? rxop.shift() : "";
   migemo.setRxop(option.rxop || rxopJavaScript);
   return prefix + migemo.query(value);
 }
