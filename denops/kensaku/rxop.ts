@@ -1,9 +1,10 @@
 import {
   isArray,
-  isObject,
+  isArrayOf,
+  isRecord,
   isString,
   isUndefined,
-} from "https://deno.land/x/unknownutil@v2.1.1/mod.ts";
+} from "jsr:@core/unknownutil@^3.18.1";
 
 // https://github.com/oguna/jsmigemo/blob/d33052525dcb4bacdddc1e0b1f39a3675831ec92/src/TernaryRegexGenerator.ts#L127
 const defaultEscape = "\\.[]{}()*+-?^$|";
@@ -48,9 +49,9 @@ export type KensakuRxop =
   };
 
 export function isKensakuRxop(x: unknown): x is KensakuRxop {
-  if (isArray(x, isString)) {
+  if (isArrayOf(isString)(x)) {
     return x.length === 6 || x.length === 7;
-  } else if (isObject(x)) {
+  } else if (isRecord(x)) {
     return (
       (isUndefined(x.prefix) || isString(x.prefix)) &&
       isString(x.or) &&

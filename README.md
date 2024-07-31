@@ -1,8 +1,8 @@
 # 🔍 kensaku.vim
 
-[![Deno 1.32.0 or above](https://img.shields.io/badge/Deno-Support%201.32.0-yellowgreen.svg?logo=deno)](https://github.com/denoland/deno/tree/v1.32.0)
-[![Vim 9.0.1499 or above](https://img.shields.io/badge/Vim-Support%209.0.1499-yellowgreen.svg?logo=vim)](https://github.com/vim/vim/tree/v9.0.1499)
-[![Neovim 0.8.0 or above](https://img.shields.io/badge/Neovim-Support%200.8-yellowgreen.svg?logo=neovim&logoColor=white)](https://github.com/neovim/neovim/tree/v0.8.0)
+[![Deno 1.45.0 or above](https://img.shields.io/badge/Deno-Support%201.45.0-yellowgreen.svg?logo=deno)](https://github.com/denoland/deno/tree/v1.45.0)
+[![Vim 9.1.0448 or above](https://img.shields.io/badge/Vim-Support%209.1.0448-yellowgreen.svg?logo=vim)](https://github.com/vim/vim/tree/v9.1.0448)
+[![Neovim 0.10.0 or above](https://img.shields.io/badge/Neovim-Support%200.10.0-yellowgreen.svg?logo=neovim&logoColor=white)](https://github.com/neovim/neovim/tree/v0.10.0)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![vim help](https://img.shields.io/badge/vim-%3Ah%20kensaku-orange.svg)](doc/kensaku.jax)
 [![test](https://github.com/lambdalisue/kensaku.vim/actions/workflows/test.yml/badge.svg)](https://github.com/lambdalisue/kensaku.vim/actions/workflows/test.yml)
@@ -58,7 +58,7 @@ Plug 'lambdalisue/kensaku.vim'
 
 ### TypeScript からの利用 (denops)
 
-[`denops.dispatch()`](https://deno.land/x/denops_std@v4.0.0/mod.ts?s=Denops#method_dispatch_5)
+[`denops.dispatch()`](https://jsr.io/@denops/core@7.0.1/doc/type/~/Denops.dispatch)
 を利用して `query` 関数を呼び出します。
 
 ```
