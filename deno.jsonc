@@ -1,8 +1,8 @@
 {
   "lock": false,
   "tasks": {
-    "test": "deno test --no-lock --unstable -A --doc --parallel --shuffle",
-    "check": "deno check --no-lock --unstable $(find . -name '*.ts')",
-    "upgrade": "deno run --no-lock -A https://deno.land/x/udd/main.ts $(find . -name '*.ts')"
+    "test": "deno test -A --doc --parallel --shuffle",
+    "check": "deno check **/*.ts",
+    "upgrade": "deno run --unstable-kv --allow-env --allow-read --allow-write --allow-run=git,deno --allow-net=jsr.io,api.jsr.io,cdn.jsdelivr.net jsr:@molt/cli@^0.19.1 **/*.ts"
   }
 }

@@ -1,5 +1,5 @@
-import type { Denops } from "https://deno.land/x/denops_std@v5.0.0/mod.ts";
-import * as unknownutil from "https://deno.land/x/unknownutil@v2.1.1/mod.ts";
+import type { Denops } from "jsr:@denops/std@^7.0.0";
+import { assert, is } from "jsr:@core/unknownutil@^3.18.1";
 import { assertQueryOption, query, setRomanTable } from "./migemo.ts";
 
 export function main(denops: Denops): void {
@@ -10,13 +10,17 @@ export function main(denops: Denops): void {
      * 必要になる辞書などは自動的にダウンロード・キャッシュします。
      */
     query(value: unknown, option: unknown = {}) {
-      unknownutil.assertString(value);
+      assert(value, is.String);
       assertQueryOption(option);
       return query(denops, value, option);
     },
     setRomanTable(romanTable: unknown) {
-      unknownutil.assertArray<[string, string, number?]>(romanTable);
+      assert(romanTable, isRomanTable);
       return setRomanTable(denops, romanTable);
     },
   };
 }
+
+const isRomanTable = is.ArrayOf<
+  [roman: string, hiragana: string, remain?: number]
+>(is.ParametersOf([is.String, is.String, is.OptionalOf(is.Number)] as const));

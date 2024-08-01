@@ -1,14 +1,15 @@
-import type { Denops } from "https://deno.land/x/denops_std@v5.0.0/mod.ts";
+import type { Denops } from "jsr:@denops/std@^7.0.0";
 import {
-  assertString,
-  isObject,
+  assert,
+  isRecord,
+  isString,
   isUndefined,
-} from "https://deno.land/x/unknownutil@v2.1.1/mod.ts";
-import * as path from "https://deno.land/std@0.188.0/path/mod.ts";
-import * as fs from "https://deno.land/std@0.188.0/fs/mod.ts";
-import * as batch from "https://deno.land/x/denops_std@v5.0.0/batch/mod.ts";
-import * as vars from "https://deno.land/x/denops_std@v5.0.0/variable/mod.ts";
-import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.7/dist/jsmigemo.min.mjs";
+} from "jsr:@core/unknownutil@^3.18.1";
+import * as path from "jsr:@std/path@^1.0.2";
+import * as fs from "jsr:@std/fs@^1.0.0";
+import * as batch from "jsr:@denops/std@^7.0.0/batch";
+import * as vars from "jsr:@denops/std@^7.0.0/variable";
+import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.8/dist/jsmigemo.min.mjs";
 import { decompose, isKensakuRxop, KensakuRxop } from "./rxop.ts";
 
 let migemo: jsmigemo.Migemo | undefined;
@@ -31,8 +32,8 @@ async function init(denops: Denops): Promise<jsmigemo.Migemo> {
       vars.g.get(denops, "kensaku_dictionary_cache"),
     ],
   );
-  assertString(dictionaryUrl);
-  assertString(dictionaryCache);
+  assert(dictionaryUrl, isString);
+  assert(dictionaryCache, isString);
 
   const data = await readOrFetch(dictionaryUrl, dictionaryCache);
   const dict = new jsmigemo.CompactDictionary(data.buffer);
@@ -69,7 +70,7 @@ export type QueryOption = {
 };
 
 export function assertQueryOption(x: unknown): asserts x is QueryOption {
-  if (!isObject(x) || (!isUndefined(x.rxop) && !isKensakuRxop(x.rxop))) {
+  if (!isRecord(x) || (!isUndefined(x.rxop) && !isKensakuRxop(x.rxop))) {
     throw new Error("Not a QueryOption");
   }
 }
