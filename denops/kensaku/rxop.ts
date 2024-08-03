@@ -1,10 +1,4 @@
-import {
-  isArray,
-  isArrayOf,
-  isRecord,
-  isString,
-  isUndefined,
-} from "jsr:@core/unknownutil@^3.18.1";
+import { is } from "jsr:@core/unknownutil@^4.0.0";
 
 // https://github.com/oguna/jsmigemo/blob/d33052525dcb4bacdddc1e0b1f39a3675831ec92/src/TernaryRegexGenerator.ts#L127
 const defaultEscape = "\\.[]{}()*+-?^$|";
@@ -49,25 +43,25 @@ export type KensakuRxop =
   };
 
 export function isKensakuRxop(x: unknown): x is KensakuRxop {
-  if (isArrayOf(isString)(x)) {
+  if (is.ArrayOf(is.String)(x)) {
     return x.length === 6 || x.length === 7;
-  } else if (isRecord(x)) {
+  } else if (is.Record(x)) {
     return (
-      (isUndefined(x.prefix) || isString(x.prefix)) &&
-      isString(x.or) &&
-      isString(x.startGroup) &&
-      isString(x.endGroup) &&
-      isString(x.startClass) &&
-      isString(x.endClass) &&
-      isString(x.newline) &&
-      isString(x.escape)
+      (is.Undefined(x.prefix) || is.String(x.prefix)) &&
+      is.String(x.or) &&
+      is.String(x.startGroup) &&
+      is.String(x.endGroup) &&
+      is.String(x.startClass) &&
+      is.String(x.endClass) &&
+      is.String(x.newline) &&
+      is.String(x.escape)
     );
   }
   return false;
 }
 
 export function decompose(rxop: KensakuRxop): [string, Rxop] {
-  if (isArray(rxop)) {
+  if (is.Array(rxop)) {
     if (rxop.length === 6) {
       return ["", [...rxop, defaultEscape]];
     } else {
