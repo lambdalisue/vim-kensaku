@@ -1,5 +1,5 @@
 import type { Denops } from "jsr:@denops/std@^7.0.0";
-import { assert, is } from "jsr:@core/unknownutil@^3.18.1";
+import { as, assert, is } from "jsr:@core/unknownutil@^4.0.0";
 import { assertQueryOption, query, setRomanTable } from "./migemo.ts";
 
 export function main(denops: Denops): void {
@@ -23,4 +23,4 @@ export function main(denops: Denops): void {
 
 const isRomanTable = is.ArrayOf<
   [roman: string, hiragana: string, remain?: number]
->(is.ParametersOf([is.String, is.String, is.OptionalOf(is.Number)] as const));
+>(is.ParametersOf([is.String, is.String, as.Optional(is.Number)] as const));

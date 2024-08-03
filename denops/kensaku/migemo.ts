@@ -1,15 +1,10 @@
 import type { Denops } from "jsr:@denops/std@^7.0.0";
-import {
-  assert,
-  isRecord,
-  isString,
-  isUndefined,
-} from "jsr:@core/unknownutil@^3.18.1";
+import { assert, is } from "jsr:@core/unknownutil@^4.0.0";
 import * as path from "jsr:@std/path@^1.0.2";
 import * as fs from "jsr:@std/fs@^1.0.0";
 import * as batch from "jsr:@denops/std@^7.0.0/batch";
 import * as vars from "jsr:@denops/std@^7.0.0/variable";
-import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.8/dist/jsmigemo.min.mjs";
+import * as jsmigemo from "npm:jsmigemo@^0.4.8";
 import { decompose, isKensakuRxop, KensakuRxop } from "./rxop.ts";
 
 let migemo: jsmigemo.Migemo | undefined;
@@ -32,8 +27,8 @@ async function init(denops: Denops): Promise<jsmigemo.Migemo> {
       vars.g.get(denops, "kensaku_dictionary_cache"),
     ],
   );
-  assert(dictionaryUrl, isString);
-  assert(dictionaryCache, isString);
+  assert(dictionaryUrl, is.String);
+  assert(dictionaryCache, is.String);
 
   const data = await readOrFetch(dictionaryUrl, dictionaryCache);
   const dict = new jsmigemo.CompactDictionary(data.buffer);
@@ -70,7 +65,7 @@ export type QueryOption = {
 };
 
 export function assertQueryOption(x: unknown): asserts x is QueryOption {
-  if (!isRecord(x) || (!isUndefined(x.rxop) && !isKensakuRxop(x.rxop))) {
+  if (!is.Record(x) || (!is.Undefined(x.rxop) && !isKensakuRxop(x.rxop))) {
     throw new Error("Not a QueryOption");
   }
 }
