@@ -9,7 +9,7 @@ import * as path from "jsr:@std/path@^1.0.2";
 import * as fs from "jsr:@std/fs@^1.0.0";
 import * as batch from "jsr:@denops/std@^7.0.0/batch";
 import * as vars from "jsr:@denops/std@^7.0.0/variable";
-import * as jsmigemo from "https://cdn.jsdelivr.net/npm/jsmigemo@0.4.8/dist/jsmigemo.min.mjs";
+import * as jsmigemo from "npm:jsmigemo@^0.4.8";
 import { decompose, isKensakuRxop, KensakuRxop } from "./rxop.ts";
 
 let migemo: jsmigemo.Migemo | undefined;
